@@ -143,7 +143,7 @@ export default function ChatPage() {
     async function deleteConversation(partnerId: number) {
         if (!window.confirm("Naozaj chceš vymazať túto konverzáciu?")) return;
 
-        const res = await fetch(`${API_BASE}/api/chat/conversation/${partnerId}`, {
+        const res = await fetch(`${API_BASE}/chat/conversation/${partnerId}`, {
             method: "DELETE",
             credentials: "include",
         });
@@ -166,7 +166,7 @@ export default function ChatPage() {
 
 
     async function fetchMe() {
-        const res = await fetch(`${API_BASE}/api/auth/me`, { credentials: "include", cache: "no-store" });
+        const res = await fetch(`${API_BASE}/auth/me`, { credentials: "include", cache: "no-store" });
         const raw: unknown = await res.json().catch(() => null);
         const parsed = parseAuthMe(raw);
 
@@ -178,7 +178,7 @@ export default function ChatPage() {
     }
 
     async function fetchConversations() {
-        const res = await fetch(`${API_BASE}/api/chat/conversations`, { credentials: "include" });
+        const res = await fetch(`${API_BASE}/chat/conversations`, { credentials: "include" });
         const raw: unknown = await res.json();
         const parsed = parseApiResponse<unknown>(raw);
 
@@ -209,7 +209,7 @@ export default function ChatPage() {
     async function openThread(partnerId: number) {
         setActivePartnerId(partnerId);
 
-        const res = await fetch(`${API_BASE}/api/chat/thread/${partnerId}`, { credentials: "include" });
+        const res = await fetch(`${API_BASE}/chat/thread/${partnerId}`, { credentials: "include" });
         const raw: unknown = await res.json();
         const parsed = parseApiResponse<unknown>(raw);
 
@@ -242,7 +242,7 @@ export default function ChatPage() {
 
         setThread(safe);
 
-        fetch(`${API_BASE}/api/chat/mark-read/${partnerId}`, {
+        fetch(`${API_BASE}/chat/mark-read/${partnerId}`, {
             method: "POST",
             credentials: "include",
         }).catch(() => {});
@@ -264,7 +264,7 @@ export default function ChatPage() {
 
         const recipientIds = selectedUsers.map((u) => u.id);
 
-        const res = await fetch(`${API_BASE}/api/chat/send-bulk`, {
+        const res = await fetch(`${API_BASE}/chat/send-bulk`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
@@ -338,13 +338,13 @@ export default function ChatPage() {
     
       fd.append("file", pickedFile);
 
-      res = await fetch(`${API_BASE}/api/chat/send`, {
+      res = await fetch(`${API_BASE}/chat/send`, {
         method: "POST",
         credentials: "include",
         body: fd,
       });
     } else {
-      res = await fetch(`${API_BASE}/api/chat/send`, {
+      res = await fetch(`${API_BASE}/chat/send`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -418,7 +418,7 @@ export default function ChatPage() {
             try {
                 setUserLoading(true);
 
-                const res = await fetch(`${API_BASE}/api/chat/users?q=${encodeURIComponent(q)}`, {
+                const res = await fetch(`${API_BASE}/chat/users?q=${encodeURIComponent(q)}`, {
                     credentials: "include",
                 });
 
